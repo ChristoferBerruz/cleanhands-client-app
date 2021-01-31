@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts ."
   },
   "keywords": [],
-  "author": "pi",
+  "author": "Christofer and Anastasiia",
   "license": "MIT",
   "config": {
     "forge": {
@@ -76,6 +76,7 @@
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "jmuxer": "^2.0.0",
     "node-loader": "^1.0.1",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",

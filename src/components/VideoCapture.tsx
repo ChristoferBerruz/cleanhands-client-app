@@ -10,6 +10,8 @@ const RecordButton:React.FC = () => {
             <button id="stopBtn">
                 Stop Recording
             </button>
+            <video controls muted id="liveFeedVideo"/>
+            <button id="liveFeedBtn" > Live Feed </button>
         </div>
     )
 }
