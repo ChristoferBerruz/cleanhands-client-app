@@ -1,0 +1,8 @@
+:root{
+    --slide-color: white;
+}
+
+div.img-slide{
+    background-color: var(--slide-color);
+    border-radius: 15px;
+}
