@@ -3,9 +3,14 @@ import React from 'react';
 const RecordButton:React.FC = () => {
 
     return(
-        <button id="cameraBtn">
-            Record a video
-        </button>
+        <div>
+            <button id="recordBtn">
+                Start Recording
+            </button>
+            <button id="stopBtn">
+                Stop Recording
+            </button>
+        </div>
     )
 }
 
