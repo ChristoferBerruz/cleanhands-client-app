@@ -1,6 +1,6 @@
 import React, {useState, useLayoutEffect} from 'react';
 import steps from '../assets/data/steps';
-import './StepsCarousel.css';
+import './StepsCarousel.scss';
 
 interface IStep{
     stepName:string,

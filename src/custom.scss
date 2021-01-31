@@ -1,0 +1,28 @@
+$primary-color: #488aed;
+$pi-font-size: 18px;
+$brand-text-color: white;
+$secondary-color: #c7d4e7;
+$dark: $primary-color;
+
+p, span{
+    font-size: $pi-font-size;
+}
+
+.navbar-brand{
+    color: $brand-text-color !important;
+    font-weight: bold;
+}
+
+span.navbar-brand{
+    font-size: 1.40rem !important;
+}
+
+body{
+    background-color: $secondary-color !important;
+}
+
+div.row {
+    margin-top: 20px;
+}
+
+@import '~bootstrap/scss/bootstrap.scss';
