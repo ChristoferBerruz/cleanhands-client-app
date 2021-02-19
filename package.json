@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.6.0",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "pi-camera-connect": "^0.3.4",
     "react": "^17.0.1",
