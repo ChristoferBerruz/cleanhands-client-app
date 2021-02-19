@@ -1,8 +1,8 @@
 {
-  "name": "cleanhands-2",
-  "productName": "cleanhands-2",
+  "name": "cleanhands",
+  "productName": "cleanhands",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Raspberry native application for the CleanHands system.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
