@@ -1,19 +1,16 @@
 import React from 'react';
+import './VideoCapture.scss';
 
-const RecordButton:React.FC = () => {
+const PiCameraButtons:React.FC = () => {
 
     return(
         <div>
-            <button id="recordBtn">
-                Start Recording
+            <button id="startRecordingBtn">
             </button>
-            <button id="stopBtn">
-                Stop Recording
+            <button id="stopRecordingBtn">
             </button>
-            <video controls muted id="liveFeedVideo"/>
-            <button id="liveFeedBtn" > Live Feed </button>
         </div>
     )
 }
 
-export default RecordButton;
+export default PiCameraButtons;
