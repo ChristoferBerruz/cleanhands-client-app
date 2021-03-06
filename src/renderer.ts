@@ -1,13 +1,19 @@
 import './index.css';
 import './App';
 
-import {photoCamera, videoCamera} from "./cleanhands-utils/cleanhands";
+import {photoCamera, videoCamera, sensor} from "./cleanhands-utils/cleanhands";
 import * as fs from "fs";
 
 const startRecordingBtn = document.getElementById('startRecordingBtn');
 const stopRecordingBtn = document.getElementById('stopRecordingBtn');
 
 startRecordingBtn.onclick = takePicture;
+
+sensor.on('data', (data) => {
+    let distance = data.toString();
+    console.log(`Parent received: ${distance}`);
+})
+
 
 async function takePicture(){
 
@@ -18,5 +24,6 @@ async function takePicture(){
 
 // Fake timeout to take a picture
 setTimeout(() => {
-    startRecordingBtn.click();
-}, 10000);
+    //startRecordingBtn.click();
+    sensor.startSensing();
+}, 1000);
