@@ -1,5 +1,5 @@
-import {PhotoCamera, VideoCamera} from "./services";
-import {StreamOptions, Codec} from "./services";
+import {PhotoCamera, VideoCamera} from "./camera-service";
+import {StreamOptions, Codec} from "./camera-service";
 import {UltrasonicSensor} from "./sensor-service";
 
 export const photoCamera = new PhotoCamera();
