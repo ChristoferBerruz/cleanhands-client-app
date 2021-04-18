@@ -38,6 +38,12 @@ export class UltrasonicSensor extends EventEmitter{
 
             this.sensorProcess = new PythonShell('sensor.py', options);
 
+            // If we get one message, everything is fine so we resolve.
+            this.sensorProcess.once('message', () => resolve());
+
+            // If there is an error, we reject
+            this.sensorProcess.once('error', () => reject());
+            
             // The only print of the script are distances in cm
             this.sensorProcess.on('message', (message) => {
 
