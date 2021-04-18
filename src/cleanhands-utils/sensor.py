@@ -12,15 +12,18 @@ try:
     GPIO.setup(PIN_TRIGGER, GPIO.OUT)
     GPIO.setup(PIN_ECHO, GPIO.IN)
 
-    i = 0
-    while i < 10:
+    # How often the sensor should sense. In seconds
+    interval_time = 1
+
+    # Loop just runs indefinitely
+    while True:
         GPIO.output(PIN_TRIGGER, GPIO.LOW)
 
-        time.sleep(2)
+        time.sleep(interval_time)
 
         GPIO.output(PIN_TRIGGER, GPIO.HIGH)
 
-        time.sleep(0.00001)
+        time.sleep(0.00001) #0.00001 is required duration of signal
 
         GPIO.output(PIN_TRIGGER, GPIO.LOW)
 
@@ -31,11 +34,12 @@ try:
 
         pulse_duration = pulse_end_time - pulse_start_time
 
+        # Distance in cm
         distance = round(pulse_duration * 17150, 4)
 
+        # Output to console so NodeJS can read it
         print distance
 
-        i+= 1
 except Exception as e:
     print "ERR"
     print e
