@@ -2,8 +2,6 @@ import './index.css';
 import './App';
 
 import {photoCamera, videoCamera, sensor} from "./cleanhands-utils/cleanhands";
-const JMuxer = require('jmuxer');
-import * as fs from "fs";
 import {io} from "socket.io-client";
 
 // Websocket information
@@ -13,13 +11,9 @@ const framesNamespace = 'pi-frames';
 
 function HandleConnectVideoSocket(videoSocket:any)
 {
-    // Create stream of video
-    const videoStream = videoCamera.createStream();
-
-
     // Attach callback on videostream
-    videoStream.on('data', (data) => {
-        videoSocket.emit('frame', new Uint8Array(data));
+    videoCamera.on('frame', (data) => {
+        videoSocket.emit('frame', data);
     });
 
     // Record for 10 second and disconnect from socket
@@ -44,13 +38,6 @@ function HandleCloseness()
     });
 
     videoSocket.on("connect_error", (e:any) => console.log(`Something went wrong: ${e}`));
-}
-
-async function takePicture(){
-
-    const image = await photoCamera.takePicture();
-    
-    fs.writeFileSync("still-image.jpg", image);
 }
 
 // Fake timeout to test sockets
