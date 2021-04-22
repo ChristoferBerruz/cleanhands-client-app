@@ -9,6 +9,7 @@ export class UltrasonicSensor extends EventEmitter{
     private static instance: UltrasonicSensor = new UltrasonicSensor(50);
     private sensorProcess: PythonShell | null;
     private tolerance: number;
+    private nearSent:boolean;
 
     /**
      * 
@@ -17,6 +18,7 @@ export class UltrasonicSensor extends EventEmitter{
     private constructor(tolerance:number){
         super();
         this.tolerance = tolerance
+        this.nearSent = false;
     }
 
     public static getInstance(): UltrasonicSensor{
@@ -49,8 +51,13 @@ export class UltrasonicSensor extends EventEmitter{
 
                 let distance:number = parseFloat(message);
                 
-                if(this.isClose(distance)){
-                    this.emit('closeness', distance);
+                if(this.isClose(distance) && !this.nearSent){
+                    this.nearSent = true;
+                    this.emit('near', distance);
+                }else if(!this.isClose(distance) && this.nearSent)
+                {
+                    this.nearSent = false;
+                    this.emit('leave', distance);
                 }
             });
             
