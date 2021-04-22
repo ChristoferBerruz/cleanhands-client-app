@@ -10,7 +10,7 @@ const options:StreamOptions = {
     codec: Codec.MJPEG,
     width: 160,
     height: 160,
-    fps: 30,
+    fps: 10,
 }
 
 export const videoCamera = new StreamCamera(options);
