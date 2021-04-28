@@ -3,6 +3,7 @@ import './App';
 
 import {videoCamera, sensor} from "./cleanhands-utils/cleanhands";
 import {io, Socket} from "socket.io-client";
+import axios from "axios";
 
 // Websocket information
 const serverName = 'https://cleanhands-flask-server-p644b.ondigitalocean.app';
@@ -10,70 +11,52 @@ const framesNamespace = 'pi-frames';
 
 const handwashingTimeReport = document.getElementById('handwashingTimeReport');
 
+// Define videoSocket to be used during application lifetime
+const videoSocket:Socket = io(`${serverName}/${framesNamespace}`);
+
+// Define url endpoint to insert handwashing record
+const endpointURL = `${serverName}/api/v1/hanwashing-record`;
+
+// Get device ID from environment
+const deviceID = parseInt(process.env.CH_DEVICE_ID);
 
 function WriteToScreen(message:string)
 {
     handwashingTimeReport.innerHTML = message;
-    // Set a timeout of 3 seconds to clear screen message
+    // Set a timeout of 30 seconds to clear screen message
     setTimeout(() => {
         handwashingTimeReport.innerHTML = "";
-    },3000);
+    },30000);
 }
-function HandleConnectVideoSocket(videoSocket:Socket)
-{
-    // Attach callback on videostream
-    videoCamera.on('frame', (data) => {
-        videoSocket.emit('frame', data);
-    });
 
-    let cleanUpResources = () => {
-        videoCamera.stopCapture();
-        videoSocket.emit('reset');
-        videoSocket.disconnect();
+videoCamera.on('frame', (frame) => {
+    if(videoSocket.connected)
+    {
+        videoSocket.emit('frameall', frame);
     }
+});
 
-    // We clear up the socket connection after we get a result
-    videoSocket.on('result', (data:number) => {
-        console.log(`Received the following result: ${data}`);
-        cleanUpResources();
-        let resultMessage = " Your handwashing time is: " + data.toString() + " seconds";
-        WriteToScreen(resultMessage);
-    });
+videoSocket.on('result', (result:number) => {
+    console.log(`Received the following result: ${result}`);
+    let resultMessage = " Your handwashing time is: " + result.toString() + " seconds";
+    WriteToScreen(resultMessage);
+    axios.put(endpointURL, {device:deviceID, duration:result});
+});
 
-    // Record indefinitely until we get result from server
-    videoCamera.startCapture();
-
-    sensor.on('leave', () => {
-        if(videoSocket.connected)
-        {
-            cleanUpResources();
-            let resultMessage = "";
-            WriteToScreen(resultMessage);
-        }
-    });
-}
+sensor.on('near', (distance:number) => {
+    console.log(`Starting capture.`);
+    videoCamera.startCapture().catch(() => console.log('Camera is already in used'));
+});
 
 
-function HandleCloseness()
-{
-    // Create a connection to the video socket
-    const videoSocket:Socket = io(`${serverName}/${framesNamespace}`);
-    console.log(`${serverName}/${framesNamespace}`);
+sensor.on('leave', (distance:number) => {
+    videoCamera.stopCapture().catch(() => console.log(`Camera is already closed.`));
+    console.log(`Stopping capture.`);
+    if(videoSocket.connected)
+    {
+        videoSocket.emit('processall');
+    }
+});
 
-    videoSocket.on("connect", () => {
-        console.log(`Sucessfully connected to ${framesNamespace} socket`);
-        HandleConnectVideoSocket(videoSocket);
-    });
-
-    videoSocket.on("connect_error", (e:any) => console.log(`Something went wrong: ${e}`));
-}
-
-const sensorNearHandler = (distance:number) => {
-    console.log(`Someone is near at ${distance} cm.`);
-    HandleCloseness();
-}
-
-sensor.on('near', sensorNearHandler);
-
+// Start sensor
 sensor.startSensing();
-//setTimeout(HandleCloseness, 15000);
