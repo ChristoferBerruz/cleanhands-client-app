@@ -6,7 +6,7 @@ import {PythonShell} from 'python-shell';
 // We will make this a singleton
 export class UltrasonicSensor extends EventEmitter{
 
-    private static instance: UltrasonicSensor = new UltrasonicSensor(50);
+    private static instance: UltrasonicSensor = new UltrasonicSensor(80);
     private sensorProcess: PythonShell | null;
     private tolerance: number;
     private nearSent:boolean;

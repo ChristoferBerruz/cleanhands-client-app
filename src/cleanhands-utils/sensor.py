@@ -13,8 +13,9 @@ try:
     GPIO.setup(PIN_ECHO, GPIO.IN)
 
     # How often the sensor should sense. In seconds
-    interval_time = 1
+    interval_time = 2
 
+    time.sleep(interval_time)
     # Loop just runs indefinitely
     while True:
         GPIO.output(PIN_TRIGGER, GPIO.LOW)
